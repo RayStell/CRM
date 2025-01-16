@@ -176,3 +176,214 @@
     position: sticky;
     top: 16px;
 }
+
+/* Стили для модальной формы */
+.modal__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modal__form-group label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.modal__form-group input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.modal__form-group input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+
+.modal__form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.modal__btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal__btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal__btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.modal__btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modal__btn-secondary:hover {
+    background-color: #545b62;
+}
+
+/* Стили для кнопок в модальном окне удаления */
+#delete-modal .modal__content {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 20px;
+}
+
+#delete-modal button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#delete-modal button:first-child {  /* Кнопка "Удалить" */
+    background-color: #007bff;
+    color: white;
+}
+
+#delete-modal button:first-child:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+#delete-modal button:last-child {  /* Кнопка "Отменить" */
+    background-color: #6c757d;
+    color: white;
+}
+
+#delete-modal button:last-child:hover {
+    background-color: #545b62;
+    color: white;
+}
+
+#delete-modal .modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #000000;
+    transition: color 0.2s;
+}
+
+#delete-modal .modal__close:hover {
+    color: #ffffff;
+}
+
+/* Стили для модального окна редактирования */
+#edit-modal .modal__content {
+    padding: 20px;
+}
+
+#edit-modal .modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #000000;
+    transition: color 0.2s;
+}
+
+#edit-modal .modal__close:hover {
+    color: #ffffff;
+}
+
+#edit-modal .modal__btn-primary {
+    background-color: #000000;
+    color: white;
+}
+
+#edit-modal .modal__btn-primary:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+#edit-modal .modal__btn-secondary {
+    background-color: #000000;
+    color: white;
+}
+
+#edit-modal .modal__btn-secondary:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Стили для модального окна истории покупок */
+#history-modal .modal__content {
+    padding: 20px;
+}
+
+#history-modal .modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #000000;
+    transition: color 0.2s;
+}
+
+#history-modal .modal__close:hover {
+    color: #ffffff;
+}
+
+/* Стили для таблицы истории */
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.history-table th,
+.history-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.history-table th {
+    background-color: #000000;
+    color: white;
+}
+
+.history-table tr:hover {
+    background-color: #f5f5f5;
+}
