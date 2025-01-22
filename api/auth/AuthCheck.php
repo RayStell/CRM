@@ -1,10 +1,10 @@
 <?php 
  
-// 
-$_SESSION['token'] = '148814881488'; 
+//$_SESSION['token'] = '';  
+
  
 function AuthCheck($successPath = '', $errorPath = '') {
-    require_once 'DB.php'; 
+    require_once 'api/DB.php'; 
     if (!isset($_SESSION['token']) && $errorPath) { 
         header("Location: " . $errorPath); 
         return; 
@@ -18,10 +18,12 @@ function AuthCheck($successPath = '', $errorPath = '') {
     //Если adminId пустой - редирект на $errorPath
     if (empty($adminID) && $errorPath) {
         header("Location: " . $errorPath);
+
     }
     //Если adminId не пустой - редирект на $successPath
-    if (empty($adminID) && $successPath) {
+    if (!empty($adminID) && $successPath) {
         header("Location: " . $successPath);
+
     }
 } 
  

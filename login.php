@@ -1,9 +1,12 @@
 <?php
 session_start();
 
-require_once 'modules/AuthCheck.php';
+require_once 'api/auth/AuthCheck.php';
 
 AuthCheck('clients.php');
+//Сделать:
+//Вывод ошибки для пароля
+//Покрасить ошибку в красный цвет и сделать
 ?>
 
 
@@ -19,14 +22,30 @@ AuthCheck('clients.php');
 <body>
     <header>
         <div class="container">
-            <form class="login-form">
+            <form action="api/auth/AuthUser.php" method="POST" class="login-form">
                 <div class="form-group">
                     <label for="username">Логин</label>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" >
+                    <p class="error" style = "Color:red;">
+                        <?php
+                        if (isset($_SESSION['login-errors'])){
+                            $errors = $_SESSION['login-errors'];
+                            echo isset($errors['login']) ? $errors['login'] : '';
+                        }
+                        ?>
+                    </p>
                 </div>
                 <div class="form-group">
                     <label for="password">Пароль</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" >
+                    <p class="error" style = "Color:red;">
+                        <?php
+                        if (isset($_SESSION['password-errors'])){
+                            $errors = $_SESSION['password-errors'];
+                            echo isset($errors['password']) ? $errors['password'] : '';
+                        }
+                        ?>
+                    </p>
                 </div>
                 <button type="submit" class="login-button">Войти</button>
             </form>
