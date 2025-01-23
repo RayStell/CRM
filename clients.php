@@ -1,11 +1,17 @@
-<?php
-
-session_start();
-
-require_once 'api/auth/AuthCheck.php';
-
-AuthCheck('', 'login.php');
-
+<?php session_start(); 
+ 
+if (isset($_GET['do']) && $_GET['do'] === 'logout'){ 
+    require_once 'api/auth/LogoutUser.php'; 
+    require_once 'api/DB.php'; 
+ 
+    LogoutUser('login.php',$DB, $_SESSION['token']);
+    exit(); 
+}  
+ 
+require_once 'api/auth/AuthCheck.php'; 
+ 
+AuthCheck('', 'login.php'); 
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,13 +27,20 @@ AuthCheck('', 'login.php');
 <body>
     <header class="header">
         <div class="container">
-            <p class="header__admin">ФИО</p>
+        <p> 
+                <?php 
+                 require 'api/DB.php'; 
+                 require_once 'api/clients/AdminName.php';  
+                  
+                 echo AdminName($_SESSION['token'], $DB); 
+                ?> 
+            </p>
             <ul class="header__links">
                 <li><a href="clients.php">Клиенты</a></li>
                 <li><a href="product.php">Товары</a></li>
                 <li><a href="#">Заказы</a></li>
             </ul>
-            <a href="#" class="header__logout">Выйти</a>
+            <a href="?do=logout" class="header__logout">Выйти</a>
         </div>
     </header>
     <main class="main">
@@ -61,257 +74,12 @@ AuthCheck('', 'login.php');
                     </thead>
                 <tbody>
                     <tr>
-                        <td>0</td>
-                        <td>Александр</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td onclick="MicroModal.show('history-modal')"><i class="fa fa-history"></i></td>
-                        <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                        <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Семён</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Казёл</td>
-                        <td>alex@gmail.com</td>
-                        <td>89123456789</td>
-                        <td>12.01.2000</td>
-                        <td>12.01.2025</td>
-                        <td><i class="fa fa-history"></i></td>
-                        <td><i class="fa fa-pencil"></i></td>
-                        <td><i class="fa fa-trash"></i></td>
+                        <?php
+                        require 'api/DB.php';
+                        require_once 'api/clients/OutputClients.php';
+                        $Clients = $DB->query("SELECT * FROM clients")->fetchAll();
+                        OutputClients($Clients);
+                        ?>
                     </tr>
                 </tbody>
             </table>
