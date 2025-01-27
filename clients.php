@@ -38,7 +38,7 @@ AuthCheck('', 'login.php');
             <ul class="header__links">
                 <li><a href="clients.php">Клиенты</a></li>
                 <li><a href="product.php">Товары</a></li>
-                <li><a href="#">Заказы</a></li>
+                <li><a href="orders.php">Заказы</a></li>
             </ul>
             <a href="?do=logout" class="header__logout">Выйти</a>
         </div>
@@ -46,13 +46,16 @@ AuthCheck('', 'login.php');
     <main class="main">
         <section class="main__filters">
             <div class="container">
-                <form action="" class="main__form">
+                <form action="" method="GET" class="main__form">
                     <label class="main__label" for="search">Поиск по имени</label>
                     <input class="main__input" type="text" id="search" name="search" placeholder="Александр">
                     <select class="main__select" name="sort" id="sort">
-                        <option value="0">По возрастанию</option>
-                        <option value="1">По убыванию</option>
+                        <option value="0">По умолчанию</option>
+                        <option value="1">По возрастанию</option>
+                        <option value="2">По убыванию</option>
                     </select>
+                    <button class="main__button" type="submit">Поиск</button>
+                    <a href="?" class="main__button main__button--reset">Сбросить</a>
                 </form>
             </div>
         </section>
@@ -77,7 +80,8 @@ AuthCheck('', 'login.php');
                         <?php
                         require 'api/DB.php';
                         require_once 'api/clients/OutputClients.php';
-                        $Clients = $DB->query("SELECT * FROM clients")->fetchAll();
+                        require_once 'api/clients/ClientsSearch.php';
+                        $Clients = ClientsSearch($_GET, $DB);
                         OutputClients($Clients);
                         ?>
                     </tr>
@@ -96,7 +100,7 @@ AuthCheck('', 'login.php');
               <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
             </header>
             <main class="modal__content" id="modal-1-content">
-                <form class="modal__form">
+                <form action="api/clients/AddClients.php" method="POST" class="modal__form">
                     <div class="modal__form-group">
                         <label for="fullname">ФИО</label>
                         <input type="text" id="fullname" name="fullname" required>
@@ -151,15 +155,15 @@ AuthCheck('', 'login.php');
                 <form class="modal__form">
                     <div class="modal__form-group">
                         <label for="fullname">ФИО</label>
-                        <input type="text" id="fullname" name="fullname" required>
+                        <input type="text" id="fullname" name="fullname">
                     </div>
                     <div class="modal__form-group">
                         <label for="email">Почта</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email">
                     </div>
                     <div class="modal__form-group">
                         <label for="phone">Телефон</label>
-                        <input type="tel" id="phone" name="phone" required>
+                        <input type="tel" id="phone" name="phone">
                     </div>
                     <div class="modal__form-actions">
                         <button type="submit" class="modal__btn modal__btn-primary">Редактировать</button>
@@ -212,6 +216,21 @@ AuthCheck('', 'login.php');
             </div>
         </div>
     </div>
+    <div class="modal micromodal-slide open" id="error-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+            <header class="modal__header">
+              <h2 class="modal__title" id="modal-1-title">
+                Ошибка
+              </h2>
+              <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+            </header>
+            <main class="modal__content" id="modal-1-content">
+                текст ошибки
+            </main>
+          </div>
+        </div>
+      </div>
     <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
     <script defer src="scripts/initClientsModal.js"></script>
 </body>

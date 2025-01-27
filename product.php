@@ -26,9 +26,9 @@ AuthCheck('', 'login.php');
             <ul class="header__links">
                 <li><a href="clients.php">Клиенты</a></li>
                 <li><a href="product.php">Товары</a></li>
-                <li><a href="#">Заказы</a></li>
+                <li><a href="orders.php">Заказы</a></li>
             </ul>
-            <a href="#" class="header__logout">Выйти</a>
+            <a href="?do=logout" class="header__logout">Выйти</a>
         </div>
     </header>
     <main class="main">
