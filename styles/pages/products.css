@@ -262,3 +262,36 @@
         max-width: 150px;
     }
 }
+
+/* Стили для кнопок */
+.main__button {
+    background-color: #157bda;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.main__button--reset {
+    background-color: #157bda;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: white !important;
+    cursor: pointer;
+    font-size: 14px;
+    transition: none;
+}
+
+.main__button--reset:hover,
+.main__button--reset:active,
+.main__button--reset:visited,
+.main__button--reset:focus {
+    color: white !important;
+    text-decoration: none;
+    background-color: #157bda;
+}

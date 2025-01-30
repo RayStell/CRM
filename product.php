@@ -2,9 +2,22 @@
 
 session_start();
 
-require_once 'api/auth/AuthCheck.php';
-
+if (isset($_GET['do']) && $_GET['do'] === 'logout'){ 
+    require_once 'api/auth/LogoutUser.php'; 
+    require_once 'api/DB.php'; 
+ 
+    LogoutUser('login.php',$DB, $_SESSION['token']);
+    exit(); 
+}  
+ 
+require_once 'api/auth/AuthCheck.php'; 
 AuthCheck('', 'login.php');
+
+// 1. Фильтрация / сортировка 
+// 2. Вывод продуктов 
+// 3. добавление 
+// 4. удаление
+
 
 ?>
 
@@ -22,7 +35,12 @@ AuthCheck('', 'login.php');
 <body>
     <header class="header">
         <div class="container">
-            <p class="header__admin">ФИО</p>
+            <p class="header__admin"> <?php 
+                 require 'api/DB.php'; 
+                 require_once 'api/clients/AdminName.php';  
+                  
+                 echo AdminName($_SESSION['token'], $DB); 
+                ?></p>
             <ul class="header__links">
                 <li><a href="clients.php">Клиенты</a></li>
                 <li><a href="product.php">Товары</a></li>
@@ -46,6 +64,8 @@ AuthCheck('', 'login.php');
                         <option value="0">По возрастанию цены</option>
                         <option value="1">По убыванию цены</option>
                     </select>
+                    <button class="main__button" type="submit">Поиск</button>
+                    <a href="?" class="main__button main__button--reset">Сбросить</a>
                 </form>
             </div>
         </section>
@@ -66,144 +86,13 @@ AuthCheck('', 'login.php');
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>Описание товара 1</td>
-                            <td>1000₽</td>
-                            <td>10</td>
-                            <td onclick="MicroModal.show('qr-modal')"><i class="fa fa-qrcode"></i></td>
-                            <td onclick="MicroModal.show('edit-modal')"><i class="fa fa-pencil"></i></td>
-                            <td onclick="MicroModal.show('delete-modal')"><i class="fa fa-trash"></i></td>
+                        <?php
+                        require 'api/DB.php';
+                        require_once 'api/product/OutputProducts.php';
+                        require_once 'api/product/ProductSearch.php';
+                        $Products = ProductSearch($_GET, $DB);
+                        OutputProducts($Products);
+                        ?>
                         </tr>
                     </tbody>
                 </table>
@@ -222,7 +111,7 @@ AuthCheck('', 'login.php');
                     <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
                 </header>
                 <main class="modal__content" id="modal-1-content">
-                    <form class="modal__form">
+                    <form action="api/product/AddProduct.php" method="POST" class="modal__form">
                         <div class="modal__form-group">
                             <label for="name">Название</label>
                             <input type="text" id="name" name="name" required>
@@ -233,11 +122,11 @@ AuthCheck('', 'login.php');
                         </div>
                         <div class="modal__form-group">
                             <label for="price">Цена</label>
-                            <input type="number" id="price" name="price" required>
+                            <input type="number" step="0.01" id="price" name="price" required>
                         </div>
                         <div class="modal__form-group">
-                            <label for="quantity">Количество</label>
-                            <input type="number" id="quantity" name="quantity" required>
+                            <label for="stock">Количество</label>
+                            <input type="number" id="stock" name="stock" required>
                         </div>
                         <div class="modal__form-actions">
                             <button type="submit" class="modal__btn modal__btn-primary">Создать</button>
