@@ -51,12 +51,15 @@ AuthCheck('', 'login.php');
                         <option value="client">Клиент</option>
                         <option value="id">ИД</option>
                         <option value="date">Дата</option>
-                        <option value="sum">Сумма</option>
+                        <option value="price">По сумме</option>
                     </select>
                     <select class="main__select" name="sort" id="sort">
-                        <option value="0">По возрастанию</option>
-                        <option value="1">По убыванию</option>
+                        <option value="0">По умолчанию</option>
+                        <option value="1">По возрастанию</option>
+                        <option value="2">По убыванию</option>
                     </select>
+                    <button class="main__button" type="submit">Поиск</button>
+                    <a href="?" class="main__button main__button--reset">Сбросить</a>
                 </form>
             </div>
         </section>
@@ -77,7 +80,15 @@ AuthCheck('', 'login.php');
                         <th>Подробнее</th>
                     </thead>
                     <tbody>
-                        <!-- Здесь будет PHP-код для вывода заказов -->
+                        <?php
+                        require 'api/DB.php';
+                        require_once 'api/helpers/convertDate.php';
+                        require_once 'api/helpers/OutputOrders.php';
+                        require_once 'api/helpers/OrdersSearch.php';
+
+                        $orders = OrdersSearch($_GET, $DB);
+                        OutputOrders($orders);
+                        ?>
                     </tbody>
                 </table>
             </div>
