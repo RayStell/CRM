@@ -206,10 +206,9 @@ AuthCheck('', 'login.php');
                 </header>
                 <main class="modal__content" id="modal-1-content">
                     <div class="qr-code-container">
-                        <!-- Здесь будет QR код -->
-                        <img src="path/to/qr-code.png" alt="QR код товара">
+                        <img id="qr-code-image" src="" alt="QR код товара">
                     </div>
-                    <button class="modal__btn modal__btn-primary">Скачать</button>
+                    <a id="qr-download" href="" download class="modal__btn modal__btn-primary">Скачать</a>
                 </main>
             </div>
         </div>
@@ -217,7 +216,7 @@ AuthCheck('', 'login.php');
 
     <!-- Модальное окно с ошибками -->
     <div class="modal micromodal-slide <?php 
-        if (isset($_SESSION['product_errors']) && !empty($_SESSION['product_errors'])) {
+        if (isset($_SESSION['products_errors']) && !empty($_SESSION['products_errors'])) {
             echo 'open';
         }
     ?>" id="error-modal" aria-hidden="true">
@@ -231,9 +230,9 @@ AuthCheck('', 'login.php');
                 </header>
                 <main class="modal__content" id="modal-1-content">
                     <?php 
-                        if (isset($_SESSION['product_errors']) && !empty($_SESSION['product_errors'])) {
-                            echo $_SESSION['product_errors'];
-                            $_SESSION['product_errors'] = '';
+                        if (isset($_SESSION['products_errors']) && !empty($_SESSION['products_errors'])) {
+                            echo $_SESSION['products_errors'];
+                            $_SESSION['products_errors'] = '';
                         }
                     ?>
                 </main>
@@ -242,6 +241,6 @@ AuthCheck('', 'login.php');
     </div>
 
     <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
-    <script defer src="scripts/initProductsModal.js"></script>
+    <script defer src="scripts/initClientsModal.js"></script>
 </body>
 </html> 

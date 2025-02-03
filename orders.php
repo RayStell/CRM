@@ -173,7 +173,6 @@ AuthCheck('', 'login.php');
             </div>
         </div>
     </div>
-
     <!-- Add Error Modal -->
     <div class="modal micromodal-slide <?php 
         if (isset($_SESSION['orders_errors']) && !empty($_SESSION['orders_errors'])) {
@@ -199,7 +198,7 @@ AuthCheck('', 'login.php');
     </div>
 
     <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
-    <script defer src="scripts/initOrdersModal.js"></script>
+    <script defer src="scripts/initClientsModal.js"></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
