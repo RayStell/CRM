@@ -29,7 +29,8 @@ function ClientsSearch($params, $DB){
 function OrdersSearch($params, $DB) {
     $search = isset($params['search']) ? trim($params['search']) : '';
     $sort = isset($params['sort']) ? $params['sort'] : '0';
-    $filter = isset($params['filter']) ? $params['filter'] : 'client';
+    $search_name = isset($params['search_name']) ? $params['search_name'] : 'client.name';
+    $order = '';
 
     $query = "
         SELECT
@@ -48,19 +49,18 @@ function OrdersSearch($params, $DB) {
         JOIN
             order_items ON orders.id = order_items.order_id
         JOIN
-            products ON order_items.product_id = products.id
-    ";
+            products ON order_items.product_id = products.id";
 
     // Добавляем WHERE условие для поиска
     if (!empty($search)) {
-        switch ($filter) {
-            case 'client':
+        switch ($search_name) {
+            case 'client.name':
                 $query .= " WHERE LOWER(clients.name) LIKE LOWER('%" . $search . "%')";
                 break;
-            case 'id':
+            case 'orders.id':
                 $query .= " WHERE orders.id = '" . $search . "'";
                 break;
-            case 'date':
+            case 'orders.order_date':
                 $query .= " WHERE DATE(orders.order_date) = '" . $search . "'";
                 break;
         }
@@ -69,33 +69,30 @@ function OrdersSearch($params, $DB) {
     $query .= " GROUP BY orders.id, clients.name, orders.order_date, orders.status";
 
     // Добавляем HAVING для поиска по цене после GROUP BY
-    if (!empty($search) && $filter === 'price') {
+    if (!empty($search) && $search_name === 'orders.total') {
         $query .= " HAVING total = '" . $search . "'";
     }
 
-    // Добавляем сортировку
+    // Добавляем сортировку независимо от поиска
     if ($sort != '0') {
         $orderDirection = ($sort == '1') ? 'ASC' : 'DESC';
-        switch ($filter) {
-            case 'client':
+        switch ($search_name) {
+            case 'client.name':
                 $query .= " ORDER BY clients.name " . $orderDirection;
                 break;
-            case 'id':
-                $query .= " ORDER BY orders.id " . $orderDirection . " ";
+            case 'orders.id':
+                $query .= " ORDER BY orders.id " . $orderDirection;
                 break;
-            case 'date':
-                $query .= " ORDER BY orders.order_date " . $orderDirection . " ";
+            case 'orders.order_date':
+                $query .= " ORDER BY orders.order_date " . $orderDirection;
                 break;
-            case 'price':
-                $query .= " ORDER BY total " . $orderDirection . " ";
+            case 'orders.total':
+                $query .= " ORDER BY total " . $orderDirection;
                 break;
             default:
-                $query .= " ORDER BY orders.id " . $orderDirection . " ";
+                $query .= " ORDER BY orders.id " . $orderDirection;
         }
     }
-
-    // Для отладки
-    // echo "<!-- SQL Query: " . $query . " -->";
 
     return $DB->query($query)->fetchAll();
 }

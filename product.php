@@ -114,19 +114,19 @@ AuthCheck('', 'login.php');
                     <form action="api/product/AddProduct.php" method="POST" class="modal__form">
                         <div class="modal__form-group">
                             <label for="name">Название</label>
-                            <input type="text" id="name" name="name" required>
+                            <input type="text" id="name" name="name" >
                         </div>
                         <div class="modal__form-group">
                             <label for="description">Описание</label>
-                            <textarea id="description" name="description" required></textarea>
+                            <textarea id="description" name="description" ></textarea>
                         </div>
                         <div class="modal__form-group">
                             <label for="price">Цена</label>
-                            <input type="number" step="0.01" id="price" name="price" required>
+                            <input type="number" step="0.01" id="price" name="price" >
                         </div>
                         <div class="modal__form-group">
                             <label for="stock">Количество</label>
-                            <input type="number" id="stock" name="stock" required>
+                            <input type="number" id="stock" name="stock" >
                         </div>
                         <div class="modal__form-actions">
                             <button type="submit" class="modal__btn modal__btn-primary">Создать</button>
@@ -152,19 +152,19 @@ AuthCheck('', 'login.php');
                     <form class="modal__form">
                         <div class="modal__form-group">
                             <label for="edit-name">Название</label>
-                            <input type="text" id="edit-name" name="name" required>
+                            <input type="text" id="edit-name" name="name" >
                         </div>
                         <div class="modal__form-group">
                             <label for="edit-description">Описание</label>
-                            <textarea id="edit-description" name="description" required></textarea>
+                            <textarea id="edit-description" name="description" ></textarea>
                         </div>
                         <div class="modal__form-group">
                             <label for="edit-price">Цена</label>
-                            <input type="number" id="edit-price" name="price" required>
+                            <input type="number" id="edit-price" name="price" >
                         </div>
                         <div class="modal__form-group">
                             <label for="edit-quantity">Количество</label>
-                            <input type="number" id="edit-quantity" name="quantity" required>
+                            <input type="number" id="edit-quantity" name="quantity" >
                         </div>
                         <div class="modal__form-actions">
                             <button type="submit" class="modal__btn modal__btn-primary">Сохранить</button>
@@ -210,6 +210,32 @@ AuthCheck('', 'login.php');
                         <img src="path/to/qr-code.png" alt="QR код товара">
                     </div>
                     <button class="modal__btn modal__btn-primary">Скачать</button>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с ошибками -->
+    <div class="modal micromodal-slide <?php 
+        if (isset($_SESSION['product_errors']) && !empty($_SESSION['product_errors'])) {
+            echo 'open';
+        }
+    ?>" id="error-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-1-title">
+                        Ошибка
+                    </h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-1-content">
+                    <?php 
+                        if (isset($_SESSION['product_errors']) && !empty($_SESSION['product_errors'])) {
+                            echo $_SESSION['product_errors'];
+                            $_SESSION['product_errors'] = '';
+                        }
+                    ?>
                 </main>
             </div>
         </div>

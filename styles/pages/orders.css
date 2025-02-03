@@ -179,47 +179,139 @@
 }
 
 /* Модальные окна */
-.modal__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.modal {
+    display: none;
 }
 
-.modal__form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.modal.is-open {
+    display: block;
 }
 
-.modal__form-group label {
-    font-size: 14px;
+.modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal__container {
+    background-color: #fff;
+    padding: 30px;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
     color: #333;
-    font-weight: 500;
 }
 
-.modal__form-group input {
+.modal__close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    font-size: 0;
+    line-height: 0;
+    text-indent: -9999px;
+}
+
+.modal__close::before,
+.modal__close::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 24px;
+    background-color: #666;
+    top: 0;
+    left: 50%;
+}
+
+.modal__close::before {
+    transform: rotate(45deg);
+}
+
+.modal__close::after {
+    transform: rotate(-45deg);
+}
+
+.modal__close:hover::before,
+.modal__close:hover::after {
+    background-color: #333;
+}
+
+.modal__form select {
+    width: 100%;
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
-    transition: border-color 0.2s;
+    background-color: white;
+    cursor: pointer;
 }
 
-.modal__form-group input:focus {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+.modal__form select[multiple] {
+    height: 150px;
 }
 
-.modal__form-actions {
+.modal__form select option {
+    padding: 8px;
+    position: relative;
+}
+
+/* Добавляем стили для форматирования цены в options */
+.modal__form select[multiple] option {
+    display: block;
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal__form select[multiple] option::after {
+    content: attr(data-price);
+    float: right;
+    color: #666;
+}
+
+/* Стили для выделенных опций */
+.modal__form select[multiple] option:checked,
+.modal__form select[multiple] option:hover {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.modal__buttons {
     display: flex;
-    gap: 1rem;
     justify-content: flex-end;
-    margin-top: 1rem;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .modal__btn {
-    padding: 8px 16px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     font-size: 14px;
@@ -227,22 +319,67 @@
     transition: background-color 0.2s;
 }
 
-.modal__btn-primary {
+.modal__btn:first-child {
     background-color: #007bff;
     color: white;
 }
 
-.modal__btn-primary:hover {
+.modal__btn:first-child:hover {
     background-color: #0056b3;
 }
 
-.modal__btn-secondary {
+.modal__btn:last-child {
     background-color: #6c757d;
     color: white;
 }
 
-.modal__btn-secondary:hover {
+.modal__btn:last-child:hover {
     background-color: #545b62;
+}
+
+/* Анимация для модального окна */
+.micromodal-slide {
+    display: none;
+}
+
+.micromodal-slide.is-open {
+    display: block;
+}
+
+.micromodal-slide[aria-hidden="false"] .modal__overlay {
+    animation: mmfadeIn .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.micromodal-slide[aria-hidden="false"] .modal__container {
+    animation: mmslideIn .3s cubic-bezier(0, 0, .2, 1);
+}
+
+.micromodal-slide[aria-hidden="true"] .modal__overlay {
+    animation: mmfadeOut .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.micromodal-slide[aria-hidden="true"] .modal__container {
+    animation: mmslideOut .3s cubic-bezier(0, 0, .2, 1);
+}
+
+@keyframes mmfadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes mmfadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes mmslideIn {
+    from { transform: translateY(15%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes mmslideOut {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10%); }
 }
 
 /* Адаптивность */
@@ -349,4 +486,63 @@
         font-size: 14px;
         padding: 8px 12px;
     }
+}
+
+.products-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.product-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.product-name {
+    flex: 1;
+}
+
+.product-price {
+    color: #666;
+    min-width: 100px;
+}
+
+.product-quantity {
+    width: 60px;
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.product-item:hover {
+    background-color: #f5f5f5;
+}
+
+.total-price {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-weight: 500;
+    text-align: right;
+}
+
+.total-price span {
+    color: #007bff;
+    font-weight: 600;
+    margin-left: 5px;
 } 
