@@ -147,16 +147,19 @@ AuthCheck('', 'login.php');
 
     <div class="modal micromodal-slide" id="delete-modal" aria-hidden="true">
         <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-            <header class="modal__header">
-              <h2 class="modal__title" id="modal-1-title">Вы уверены, что хотите удалить заказ?</h2>
-              <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-            </header>
-            <main class="modal__content" id="modal-1-content">
-                <button>Удалить</button>
-                <button onclick="MicroModal.close('delete-modal')">Отменить</button>
-            </main>
-          </div>
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-1-title">Вы уверены, что хотите удалить заказ?</h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-1-content">
+                    <form action="api/helpers/DeleteOrders.php" method="POST">
+                        <input type="hidden" name="order_id" id="delete_order_id">
+                        <button type="submit" class="modal__btn modal__btn-primary">Удалить</button>
+                        <button type="button" class="modal__btn modal__btn-secondary" onclick="MicroModal.close('delete-modal')">Отменить</button>
+                    </form>
+                </main>
+            </div>
         </div>
     </div>
 
@@ -226,6 +229,11 @@ AuthCheck('', 'login.php');
 
         productsList.addEventListener('change', updateTotalPrice);
         productsList.addEventListener('input', updateTotalPrice);
+
+        window.showDeleteModal = function(orderId) {
+            document.getElementById('delete_order_id').value = orderId;
+            MicroModal.show('delete-modal');
+        }
     });
     </script>
 </body>
