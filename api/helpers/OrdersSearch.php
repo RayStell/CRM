@@ -26,75 +26,58 @@ function ClientsSearch($params, $DB){
    return $clients;
 }
 
-function OrdersSearch($params, $DB) {
-    $search = isset($params['search']) ? trim($params['search']) : '';
-    $sort = isset($params['sort']) ? $params['sort'] : '0';
-    $search_name = isset($params['search_name']) ? $params['search_name'] : 'client.name';
-    $order = '';
+function OrdersSearch($get, $DB) {
+    $sql = "SELECT 
+                orders.*,
+                clients.name,
+                GROUP_CONCAT(products.name) as product_names,
+                GROUP_CONCAT(order_items.quantity) as product_quantities,
+                GROUP_CONCAT(products.price) as product_prices
+            FROM orders 
+            LEFT JOIN clients ON orders.client_id = clients.id 
+            LEFT JOIN order_items ON orders.id = order_items.order_id
+            LEFT JOIN products ON order_items.product_id = products.id
+            WHERE 1=1";
+    $params = [];
 
-    $query = "
-        SELECT
-            orders.id,
-            clients.name,
-            orders.order_date,
-            SUM(products.price * order_items.quantity) as total,
-            orders.status,
-            GROUP_CONCAT(products.name SEPARATOR ', ') AS product_names,
-            GROUP_CONCAT(order_items.quantity SEPARATOR ', ') AS product_quantities,
-            GROUP_CONCAT(products.price SEPARATOR ', ') AS product_prices
-        FROM
-            orders
-        JOIN
-            clients ON orders.client_id = clients.id
-        JOIN
-            order_items ON orders.id = order_items.order_id
-        JOIN
-            products ON order_items.product_id = products.id";
-
-    // Добавляем WHERE условие для поиска
-    if (!empty($search)) {
-        switch ($search_name) {
-            case 'client.name':
-                $query .= " WHERE LOWER(clients.name) LIKE LOWER('%" . $search . "%')";
-                break;
-            case 'orders.id':
-                $query .= " WHERE orders.id = '" . $search . "'";
-                break;
-            case 'orders.order_date':
-                $query .= " WHERE DATE(orders.order_date) = '" . $search . "'";
-                break;
-        }
+    // Фильтр по статусу (по умолчанию показываем только активные)
+    if (!isset($get['show_inactive'])) {
+        $sql .= " AND orders.status = '1'";
     }
 
-    $query .= " GROUP BY orders.id, clients.name, orders.order_date, orders.status";
-
-    // Добавляем HAVING для поиска по цене после GROUP BY
-    if (!empty($search) && $search_name === 'orders.total') {
-        $query .= " HAVING total = '" . $search . "'";
+    // Поиск
+    if (isset($get['search']) && !empty($get['search'])) {
+        $searchField = isset($get['search_name']) ? $get['search_name'] : 'clients.name';
+        $sql .= " AND {$searchField} LIKE :search";
+        $params[':search'] = '%' . $get['search'] . '%';
     }
 
-    // Добавляем сортировку независимо от поиска
-    if ($sort != '0') {
-        $orderDirection = ($sort == '1') ? 'ASC' : 'DESC';
-        switch ($search_name) {
-            case 'client.name':
-                $query .= " ORDER BY clients.name " . $orderDirection;
+    // Группировка
+    $sql .= " GROUP BY orders.id";
+
+    // Сортировка
+    if (isset($get['sort'])) {
+        $sortField = isset($get['search_name']) ? $get['search_name'] : 'orders.id';
+        // Заменяем client.name на clients.name если необходимо
+        $sortField = str_replace('client.name', 'clients.name', $sortField);
+        
+        switch ($get['sort']) {
+            case '1': // По возрастанию
+                $sql .= " ORDER BY {$sortField} ASC";
                 break;
-            case 'orders.id':
-                $query .= " ORDER BY orders.id " . $orderDirection;
-                break;
-            case 'orders.order_date':
-                $query .= " ORDER BY orders.order_date " . $orderDirection;
-                break;
-            case 'orders.total':
-                $query .= " ORDER BY total " . $orderDirection;
+            case '2': // По убыванию
+                $sql .= " ORDER BY {$sortField} DESC";
                 break;
             default:
-                $query .= " ORDER BY orders.id " . $orderDirection;
+                $sql .= " ORDER BY orders.id DESC";
         }
+    } else {
+        $sql .= " ORDER BY orders.id DESC";
     }
 
-    return $DB->query($query)->fetchAll();
+    $stmt = $DB->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
 }
 
 ?>

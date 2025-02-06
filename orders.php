@@ -58,6 +58,10 @@ AuthCheck('', 'login.php');
                         <option value="1">По возрастанию</option>
                         <option value="2">По убыванию</option>
                     </select>
+                    <div class="main__checkbox-wrapper">
+                        <input type="checkbox" id="show_inactive" name="show_inactive" class="main__checkbox">
+                        <label for="show_inactive">Показать неактивные заказы</label>
+                    </div>
                     <button class="main__button" type="submit">Поиск</button>
                     <a href="?" class="main__button main__button--reset">Сбросить</a>
                 </form>

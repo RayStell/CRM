@@ -36,7 +36,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $DB->beginTransaction();
 
         // 1. Создаем заказ
-        $sql = "INSERT INTO orders (client_id, order_date, status) VALUES (:client_id, NOW(), 'new')";
+        $sql = "INSERT INTO orders (client_id, order_date, status, total) VALUES (:client_id, NOW(), '1', 0)";
         $stmt = $DB->prepare($sql);
         $stmt->execute([
             ':client_id' => $formData['client_id']
@@ -45,12 +45,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Получаем ID созданного заказа
         $order_id = $DB->lastInsertId();
 
-        // 2. Добавляем товары к заказу
+        // 2. Добавляем товары к заказу и считаем общую сумму
+        $total_price = 0;
         $sql = "INSERT INTO order_items (order_id, product_id, quantity) VALUES (:order_id, :product_id, :quantity)";
         $stmt = $DB->prepare($sql);
 
+        // Получаем цены продуктов
+        $products_sql = "SELECT id, price FROM products WHERE id IN (" . implode(',', $formData['product_id']) . ")";
+        $products = $DB->query($products_sql)->fetchAll(PDO::FETCH_KEY_PAIR);
+
         foreach($formData['product_id'] as $product_id) {
-            // Проверяем, есть ли количество для данного товара
             $quantity = isset($formData['quantity'][$product_id]) ? $formData['quantity'][$product_id] : 1;
             
             $stmt->execute([
@@ -58,7 +62,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':product_id' => $product_id,
                 ':quantity' => $quantity
             ]);
+
+            // Добавляем к общей сумме
+            $total_price += $products[$product_id] * $quantity;
         }
+
+        // Обновляем общую сумму заказа
+        $update_total_sql = "UPDATE orders SET total = :total WHERE id = :order_id";
+        $update_stmt = $DB->prepare($update_total_sql);
+        $update_stmt->execute([
+            ':total' => $total_price,
+            ':order_id' => $order_id
+        ]);
 
         // Если всё прошло успешно, фиксируем транзакцию
         $DB->commit();
@@ -71,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $DB->rollBack();
         
         $_SESSION['orders_errors'] = '<div style="color: #842029; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 5px; padding: 15px; margin: 10px 0;">
-            <h4 style="margin: 0;">Произошла ошибка при создании заказа</h4>
+            <h4 style="margin: 0;">Произошла ошибка при создании заказа: ' . $e->getMessage() . '</h4>
         </div>';
         
         header('Location: ../../orders.php');
