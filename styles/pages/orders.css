@@ -545,4 +545,94 @@
     color: #007bff;
     font-weight: 600;
     margin-left: 5px;
+}
+
+/* Main button styles */
+.main__button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.main__button:hover {
+    background-color: #0056b3;
+}
+
+.main__button--reset {
+    background-color: #6c757d;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.main__button--reset:hover {
+    background-color: #545b62;
+}
+
+/* Checkbox wrapper and checkbox styles */
+.main__checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.main__checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Modal form group styles */
+.modal__form-group {
+    margin-bottom: 15px;
+}
+
+.modal__form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+.modal__form-group input[type="email"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.modal__form-group input[type="email"]:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+
+/* Modal button styles */
+.modal__btn-primary {
+    background-color: #dc3545;
+    color: white;
+    margin-right: 10px;
+}
+
+.modal__btn-primary:hover {
+    background-color: #c82333;
+}
+
+.modal__btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modal__btn-secondary:hover {
+    background-color: #545b62;
+}
+
+/* Error modal styles when open */
+.modal.open {
+    display: block;
 } 

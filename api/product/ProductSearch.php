@@ -7,7 +7,7 @@ function ProductSearch($params, $DB){
    $sort1 = isset($params['sort1']) ? $params['sort1'] : '0';
 
    //Добавить сортировку (order by)
-   $order = "";
+   $orderBy = "";
    
    // Первая сортировка по полю
    $sortField = "";
@@ -29,13 +29,13 @@ function ProductSearch($params, $DB){
 
    // Если выбрано поле сортировки, добавляем ORDER BY
    if($sort1 != '0' || $sort != '0') {
-      $order = " ORDER BY $sortField $sortDirection";
+      $orderBy = " ORDER BY $sortField $sortDirection";
    }
 
    $search = trim(strtolower($search));
 
    $products = $DB->query(
-      "SELECT * FROM products WHERE LOWER(name) LIKE '%$search%'" . $order
+      "SELECT * FROM products WHERE LOWER(name) LIKE '%$search%'$orderBy"
    )->fetchAll();
    
    //Вывести данные в таблицу

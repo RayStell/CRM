@@ -9,6 +9,7 @@ if (isset($_GET['do']) && $_GET['do'] === 'logout'){
 }  
  
 require_once 'api/auth/AuthCheck.php'; 
+require_once 'api/helpers/InputDefaultValue.php'; 
  
 AuthCheck('', 'login.php'); 
  
@@ -47,12 +48,16 @@ AuthCheck('', 'login.php');
         <section class="main__filters">
             <div class="container">
                 <form action="" method="GET" class="main__form">
-                    <label class="main__label" for="search">Поиск по имени</label>
-                    <input class="main__input" type="text" id="search" name="search" placeholder="Александр">
+                    <label class="main__label" for="search">Поиск</label>
+                    <select class="main__select" name="search_name" id="search_name">
+                        <option value="name" <?php echo (isset($_GET['search_name']) && $_GET['search_name'] === 'name') ? 'selected' : ''; ?>>Поиск по имени</option>
+                        <option value="email" <?php echo (isset($_GET['search_name']) && $_GET['search_name'] === 'email') ? 'selected' : ''; ?>>Поиск по почте</option>
+                    </select>
+                    <input <?php InputDefaultValue('search', ''); ?> class="main__input" type="text" id="search" name="search" placeholder="Александр">
                     <select class="main__select" name="sort" id="sort">
-                        <option value="0">По умолчанию</option>
-                        <option value="1">По возрастанию</option>
-                        <option value="2">По убыванию</option>
+                        <option value="0" <?php echo (!isset($_GET['sort']) || $_GET['sort'] === '0') ? 'selected' : ''; ?>>По умолчанию</option>
+                        <option value="1" <?php echo (isset($_GET['sort']) && $_GET['sort'] === '1') ? 'selected' : ''; ?>>По возрастанию</option>
+                        <option value="2" <?php echo (isset($_GET['sort']) && $_GET['sort'] === '2') ? 'selected' : ''; ?>>По убыванию</option>
                     </select>
                     <button class="main__button" type="submit">Поиск</button>
                     <a href="?" class="main__button main__button--reset">Сбросить</a>

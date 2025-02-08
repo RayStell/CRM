@@ -111,15 +111,19 @@ AuthCheck('', 'login.php');
                     <form class="modal__form" action="api/helpers/AddOrders.php" method="POST">
                         <div class="modal__form-group">
                             <label for="client">Клиент</label>
-                            <select name="client_id" id="client" >
-                                <option value="">Выберите клиента</option>
+                            <select class="main__select" name="client" id="client">
+                                <option value="new">Новый пользователь</option>
                                 <?php 
-                                $users = $DB->query("SELECT * FROM clients")->fetchAll();
+                                $users = $DB->query("SELECT id, name FROM clients")->fetchAll();
                                 foreach ($users as $user) {
                                     echo "<option value='{$user['id']}'>{$user['name']}</option>";
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div class="modal__form-group group-email" id="email-field" style="display: none;">
+                            <label for="email">Почта</label>
+                            <input type="email" id="email" name="email" placeholder="Введите почту....">
                         </div>
                         <div class="modal__form-group">
                             <label>Товары</label>
@@ -206,6 +210,7 @@ AuthCheck('', 'login.php');
 
     <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
     <script defer src="scripts/initClientsModal.js"></script>
+    <script defer src="scripts/orders.js"></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {

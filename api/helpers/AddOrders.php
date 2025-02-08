@@ -14,6 +14,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Не выбраны товары';
     }
 
+    if ($formData['client'] === 'new') {
+        $fields[] = 'email';
+    }
+
     if(!empty($errors)) {
         $error_list = '<div style="color: #842029; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 5px; padding: 15px; margin: 10px 0;">';
         $error_list .= '<h4 style="margin: 0 0 10px 0; color: #842029;">Пожалуйста, исправьте следующие ошибки:</h4>';
@@ -28,18 +32,31 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    
     require_once '../DB.php';
 
     try {
         // Начинаем транзакцию
         $DB->beginTransaction();
 
+        // Обработка нового клиента
+        $clientID = $formData['client'] === 'new' ? time() : $formData['client'];
+        if ($formData['client'] === 'new') {
+            $stmt = $DB->prepare("INSERT INTO clients (id, name, email, phone, birthday) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $clientID,
+                $formData['name'] ?? 'не указано',
+                $formData['email'],
+                'не указано', // значение по умолчанию для phone
+                'не указано'  // значение по умолчанию для birthday
+            ]);
+        }
+
         // 1. Создаем заказ
-        $sql = "INSERT INTO orders (client_id, order_date, status, total) VALUES (:client_id, NOW(), '1', 0)";
+        $sql = "INSERT INTO orders (id, client_id, order_date, status, total) VALUES (:id, :client_id, NOW(), '1', 0)";
         $stmt = $DB->prepare($sql);
         $stmt->execute([
-            ':client_id' => $formData['client_id']
+            ':id' => time(),
+            ':client_id' => $clientID
         ]);
         
         // Получаем ID созданного заказа
@@ -92,7 +109,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ../../orders.php');
         exit();
     }
-
 } else {
     echo json_encode([
         'error' => 'Неверный метод запроса'
